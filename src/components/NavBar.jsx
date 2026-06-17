@@ -16,6 +16,12 @@ const NavBar = () => {
     } = authClient.useSession()
 if (isPending) return null;
 const user = session?.user
+const dashboardPath =
+  user?.role === "admin"
+    ? "/dashboard/admin"
+    : user?.role === "freelancer"
+    ? "/dashboard/freelancer"
+    : "/dashboard/client";
 const handleLogOut = async() =>{
 await authClient.signOut()
 }
@@ -108,32 +114,27 @@ await authClient.signOut()
         <Avatar.Fallback>{user.name[0]}</Avatar.Fallback>
       </Avatar>
       </Button>
-      <Dropdown.Popover>
-       <Dropdown.Menu>
-  <Dropdown.Item id="dashboard" textValue="Dashboard">
+     <Dropdown.Popover>
+  <Dropdown.Menu>
+  <Dropdown.Item key="dashboard" textValue="Dashboard">
     <Link
-      href="/dashboard"
-      className={`font-semibold ${
-        pathname === "/dashboard"
-          ? "text-[#dd9787]"
-          : "hover:text-[#dd9787]"
-      }`}
+      href={dashboardPath}
+      className="block w-full font-semibold hover:text-[#dd9787]"
     >
       Dashboard
     </Link>
   </Dropdown.Item>
 
   <Dropdown.Item
-    id="logout"
+    key="logout"
     textValue="Logout"
-    variant="danger"
-    onAction={handleLogOut}
+    onPress={handleLogOut}
     className="text-red-500 font-semibold"
   >
     Logout
   </Dropdown.Item>
 </Dropdown.Menu>
-      </Dropdown.Popover>
+</Dropdown.Popover>
     </Dropdown></div>): (<div> <Link href="/login">
                   <Button className="w-full bg-gradient-to-r from-[#678d58] to-[#74d3ae] text-white">
                     Login
@@ -164,11 +165,7 @@ await authClient.signOut()
               </li>
             ))}
 
-            <Link href="/login" onClick={() => setIsMenuOpen(false)}>
-              <Button className="w-full mt-3 bg-gradient-to-r from-[#678d58] to-[#74d3ae] text-white rounded-full">
-                Login
-              </Button>
-            </Link>
+           
           </ul>
         </div>
       )}

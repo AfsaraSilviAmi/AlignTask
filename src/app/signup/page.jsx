@@ -10,11 +10,12 @@ import {
   Label,
   FieldError,
   Description,
-  toast,
+ 
 } from "@heroui/react";
 import { authClient } from "@/lib/auth-client";
 import { useRouter } from "next/navigation";
 import { Icon } from "@iconify/react";
+import { toast } from "react-toastify";
 
 export default function SignupPage() {
   const [form, setForm] = useState({
@@ -38,20 +39,7 @@ const router = useRouter();
     const formData = new FormData(e.currentTarget)
      const user = Object.fromEntries(formData.entries());
 
-    const { data, error } = await authClient.signUp.email({
-    name: user.name, // required
-    email: user.email, // required
-    password: user.password, // required
-    image: user.image,
    
-});  
-
-if(data){
-   router.push("/")
-}
-if(error){
-    toast.error(error.message)
-}
     setError("");
 
     if (!form.name || !form.email || !form.password) {
@@ -63,9 +51,26 @@ if(error){
         "Password must be 6+ chars, include uppercase & lowercase"
       );
     }
+     const { data, error } = await authClient.signUp.email({
+    name: user.name, // required
+    email: user.email, // required
+    password: user.password, // required
+    image: user.image,
+    role: user.role,
+   
+});  
 
-    console.log("Signup data:", form);
-    alert("Form ready (backend later) 🚀");
+if(data){
+   toast.success("Sign up Successful! 🎊")
+   router.push("/")
+  
+}
+if(error){
+    toast.error(error.message)
+}
+
+   
+   
   };
 const handleGoogleSignIn = async () => {
   const { data, error } = await authClient.signIn.social({
@@ -194,7 +199,7 @@ const handleGoogleSignIn = async () => {
           {/* SUBMIT */}
           <Button
             type="submit"
-            className="w-full bg-gradient-to-r from-[#678d58] to-[#74d3ae] text-white font-medium"
+            className="w-full bg-linear-to-r from-[#678d58] to-[#74d3ae] text-white font-medium"
           >
             Sign Up
           </Button>
