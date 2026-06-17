@@ -11,11 +11,11 @@ const Footer = () => {
   ];
 
   return (
-    <footer className="border-t border-white/20 bg-[#74d3ae]/20 backdrop-blur-xl mt-20">
+    <footer className="border-t border-white/20 bg-[#74d3ae]/20 backdrop-blur-xl">
       <div className="mx-auto px-6 py-10">
 
         {/* TOP SECTION - 4 COLUMNS */}
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-10">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-10">
 
           {/* 1. LOGO */}
           <div>
@@ -23,10 +23,10 @@ const Footer = () => {
               <Image src="/logo.png" alt="logo" width={40} height={40} />
 
               <p className="font-bold italic text-xl">
-                <span className="bg-gradient-to-r from-[#678d58] to-[#74d3ae] bg-clip-text text-transparent">
+                <span className="bg-linear-to-r from-[#678d58] to-[#74d3ae] bg-clip-text text-transparent">
                   Align
                 </span>
-                <span className="bg-gradient-to-r from-[#a6c48a] to-[#74d3ae] bg-clip-text text-transparent">
+                <span className="bg-linear-to-r from-[#a6c48a] to-[#74d3ae] bg-clip-text text-transparent">
                   Task
                 </span>
               </p>

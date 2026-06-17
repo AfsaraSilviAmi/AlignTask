@@ -1,14 +1,25 @@
 "use client";
 
-import { Button } from "@heroui/react";
+import { Avatar, Button, Dropdown } from "@heroui/react";
 import Image from "next/image";
 import { useState } from "react";
 import { usePathname } from "next/navigation";
 import Link from "next/link";
+import { authClient } from "@/lib/auth-client";
 
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
+  const {
+        data: session,
+        isPending
+    } = authClient.useSession()
+if (isPending) return null;
+const user = session?.user
+const handleLogOut = async() =>{
+await authClient.signOut()
+}
+
 
   const navLinks = [
     { name: "Home", href: "/" },
@@ -87,13 +98,49 @@ const NavBar = () => {
         </ul>
 
         {/* RIGHT SIDE */}
-        <div className="hidden md:flex items-center gap-4">
+        <div className="items-center gap-4">
 
-          <Link href="/login">
-            <Button className="bg-gradient-to-r from-[#678d58] to-[#74d3ae] text-white font-medium px-5 py-2 rounded-full shadow-md hover:shadow-lg hover:scale-105 transition-all">
-              Login
-            </Button>
-          </Link>
+            {
+            user? (<div>  <Dropdown>
+      <Button  isIconOnly aria-label="Menu" className="bg-transparent min-w-0 p-0 h-auto">
+        <Avatar>
+        <Avatar.Image alt={user.name} src={user.image} />
+        <Avatar.Fallback>{user.name[0]}</Avatar.Fallback>
+      </Avatar>
+      </Button>
+      <Dropdown.Popover>
+       <Dropdown.Menu>
+  <Dropdown.Item id="dashboard" textValue="Dashboard">
+    <Link
+      href="/dashboard"
+      className={`font-semibold ${
+        pathname === "/dashboard"
+          ? "text-[#dd9787]"
+          : "hover:text-[#dd9787]"
+      }`}
+    >
+      Dashboard
+    </Link>
+  </Dropdown.Item>
+
+  <Dropdown.Item
+    id="logout"
+    textValue="Logout"
+    variant="danger"
+    onAction={handleLogOut}
+    className="text-red-500 font-semibold"
+  >
+    Logout
+  </Dropdown.Item>
+</Dropdown.Menu>
+      </Dropdown.Popover>
+    </Dropdown></div>): (<div> <Link href="/login">
+                  <Button className="w-full bg-gradient-to-r from-[#678d58] to-[#74d3ae] text-white">
+                    Login
+                  </Button>
+                </Link></div>)
+        }
+
         </div>
       </header>
 
