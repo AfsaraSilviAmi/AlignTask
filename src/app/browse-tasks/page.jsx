@@ -57,25 +57,12 @@ export default function PublicBrowseTasks() {
             </div>
 
             {/* ROLE CHECK */}
-            {!user ? (
-              <Link
-                href="/login"
-                className="block mt-4 text-center bg-gray-200 py-2 rounded-lg"
-              >
-                Login to Apply
-              </Link>
-            ) : user.role !== "freelancer" ? (
-              <div className="mt-4 text-center text-sm text-red-500">
-                Only freelancers can apply
-              </div>
-            ) : (
-              <Link
-                href={`/browse-tasks/${task._id}`}
-                className="block mt-4 text-center bg-black text-white py-2 rounded-lg hover:bg-gray-800"
-              >
-                View & Apply
-              </Link>
-            )}
+           <Link
+  href={`/browse-tasks/${task._id}`}
+  className="block mt-4 text-center bg-black text-white py-2 rounded-lg hover:bg-gray-800"
+>
+  View Details
+</Link>
           </div>
         ))}
       </div>

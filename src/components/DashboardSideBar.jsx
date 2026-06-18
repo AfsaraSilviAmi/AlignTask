@@ -39,7 +39,7 @@ export function DashboardSideBar() {
 
     freelancer: [
       { icon: House, label: "Dashboard", href: "/dashboard/freelancer" },
-      { icon: Briefcase, label: "Jobs", href: "/dashboard/freelancer/jobs" },
+      { icon: Briefcase, label: "Browse Jobs", href: "/dashboard/freelancer/browse-tasks" },
       { icon: Envelope, label: "Messages", href: "/dashboard/freelancer/messages" },
       { icon: Gear, label: "Settings", href: "/dashboard/freelancer/settings" },
     ],

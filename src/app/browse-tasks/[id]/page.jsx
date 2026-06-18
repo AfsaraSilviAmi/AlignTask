@@ -53,7 +53,7 @@ export default async function Page({ params }) {
 
         {/* OPTIONAL EXTRA INFO */}
        <div className="pt-4 border-t text-sm text-gray-500">
-  Posted by: <span className="font-medium">{task.clientName}</span>
+  Posted by: <span className="font-medium">{task.clientName || "Unknown Client"}</span>
 </div>
 
       </div>
