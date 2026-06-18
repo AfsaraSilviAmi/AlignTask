@@ -8,10 +8,10 @@ import {
   House,
   Person,
   Briefcase,
-  Clipboard,
   Plus,
   ListCheck,
   File,
+  LayoutSideContent,
 } from "@gravity-ui/icons";
 
 import { Button, Drawer } from "@heroui/react";
@@ -56,22 +56,36 @@ export function DashboardSideBar() {
 
   return (
     <>
-      {/* ================= MOBILE DRAWER ================= */}
-      <div className="lg:hidden">
+      {/* MOBILE DRAWER */}
+      <div className="lg:hidden mt-2">
         <Drawer open={open} onOpenChange={setOpen}>
-          <Button variant="secondary" onPress={() => setOpen(true)}>
-            <Bars />
-            Menu
-          </Button>
+        <Button
+  onClick={() => setOpen(true)}
+  className="bg-linear-to-r from-[#678d58] to-[#74d3ae] text-white"
+>
+ <LayoutSideContent/>
+</Button>
 
           <Drawer.Backdrop>
             <Drawer.Content placement="left">
               <Drawer.Dialog>
                 <Drawer.CloseTrigger />
 
-                <Drawer.Header>
-                  <Drawer.Heading>Dashboard</Drawer.Heading>
-                </Drawer.Header>
+              <Drawer.Header className="border-b pb-4">
+  <div>
+    <h2 className="text-xl font-bold bg-gradient-to-r from-[#678d58] to-[#74d3ae] bg-clip-text text-transparent">
+      AlignTask
+    </h2>
+
+    <p className="text-sm text-gray-500">
+      {role === "admin"
+        ? "Admin Panel"
+        : role === "freelancer"
+        ? "Freelancer Hub"
+        : "Client Dashboard"}
+    </p>
+  </div>
+</Drawer.Header>
 
                 <Drawer.Body>
                   <nav className="flex flex-col gap-2">
@@ -87,6 +101,20 @@ export function DashboardSideBar() {
                       </Link>
                     ))}
                   </nav>
+                  <div className="mt-6 border-t pt-4">
+  <div className="flex items-center gap-3">
+    <div className="h-10 w-10 rounded-full bg-linear-to-r from-[#678d58] to-[#74d3ae] flex items-center justify-center text-white font-semibold">
+      {user?.name?.charAt(0)}
+    </div>
+
+    <div>
+      <p className="font-medium text-sm">{user?.name}</p>
+      <p className="text-xs text-gray-500 capitalize">
+        {role}
+      </p>
+    </div>
+  </div>
+</div>
                 </Drawer.Body>
               </Drawer.Dialog>
             </Drawer.Content>
@@ -127,9 +155,20 @@ export function DashboardSideBar() {
         </nav>
 
         {/* Footer */}
-        <div className="mt-auto pt-6 border-t text-xs text-gray-400">
-          Logged in as {user?.name}
-        </div>
+        <div className="mt-6 border-t pt-4">
+  <div className="flex items-center gap-3">
+    <div className="h-10 w-10 rounded-full bg-gradient-to-r from-[#678d58] to-[#74d3ae] flex items-center justify-center text-white font-semibold">
+      {user?.name?.charAt(0)}
+    </div>
+
+    <div>
+      <p className="font-medium text-sm">{user?.name}</p>
+      <p className="text-xs text-gray-500 capitalize">
+        {role}
+      </p>
+    </div>
+  </div>
+</div>
       </aside>
     </>
   );
