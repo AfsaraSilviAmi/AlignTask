@@ -1,7 +1,7 @@
 "use client";
 
 import {
-  Bars,
+ 
   Bell,
   Envelope,
   Gear,
@@ -14,7 +14,7 @@ import {
   LayoutSideContent,
 } from "@gravity-ui/icons";
 
-import { Button, Drawer } from "@heroui/react";
+import { Avatar, Button, Drawer } from "@heroui/react";
 import Link from "next/link";
 import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
@@ -157,9 +157,10 @@ export function DashboardSideBar() {
         {/* Footer */}
         <div className="mt-6 border-t pt-4">
   <div className="flex items-center gap-3">
-    <div className="h-10 w-10 rounded-full bg-gradient-to-r from-[#678d58] to-[#74d3ae] flex items-center justify-center text-white font-semibold">
-      {user?.name?.charAt(0)}
-    </div>
+   <Avatar>
+           <Avatar.Image alt={user?.name} src={user?.image} />
+           <Avatar.Fallback>{user?.name[0]}</Avatar.Fallback>
+         </Avatar>
 
     <div>
       <p className="font-medium text-sm">{user?.name}</p>

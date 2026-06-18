@@ -81,11 +81,14 @@ const validateForm = () => {
 
 
   try {
-    const payload = {
-      ...form,
-      category: form.category, // force read latest state
-      userId: user?.id,
-    };
+   const payload = {
+  ...form,
+  category: form.category,
+
+  userId: user?.id,
+  clientName: user?.name,
+  clientEmail: user?.email,
+};
 
     // DEBUG (VERY IMPORTANT)
     console.log("FINAL PAYLOAD:", payload);
@@ -138,7 +141,7 @@ setErrors({});
   placeholder="Task Title"
   value={form.title}
   onChange={handleChange}
-  isInvalid={!!errors.title}
+ 
 />
 
 {errors.title && (
@@ -218,7 +221,7 @@ setErrors({});
   placeholder="Task Description"
   value={form.description}
   onChange={handleChange}
-  isInvalid={!!errors.description}
+
 />
 
 {errors.description && (
@@ -236,7 +239,7 @@ setErrors({});
   placeholder="Budget (USD)"
   value={form.budget}
   onChange={handleChange}
-  isInvalid={!!errors.budget}
+ 
 />
 
 {errors.budget && (
@@ -252,7 +255,7 @@ setErrors({});
   type="date"
   value={form.deadline}
   onChange={handleChange}
-  isInvalid={!!errors.deadline}
+ 
 />
 
 {errors.deadline && (

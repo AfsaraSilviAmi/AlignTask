@@ -29,7 +29,7 @@ await authClient.signOut()
 
   const navLinks = [
     { name: "Home", href: "/" },
-    { name: "Browse Tasks", href: "/tasks" },
+    { name: "Browse Tasks", href: "/browse-tasks" },
     { name: "Browse Freelancers", href: "/freelancers" },
   ];
 
@@ -110,8 +110,8 @@ await authClient.signOut()
             user? (<div>  <Dropdown>
       <Button  isIconOnly aria-label="Menu" className="bg-transparent min-w-0 p-0 h-auto">
         <Avatar>
-        <Avatar.Image alt={user.name} src={user.image} />
-        <Avatar.Fallback>{user.name[0]}</Avatar.Fallback>
+        <Avatar.Image alt={user?.name} src={user?.image} />
+        <Avatar.Fallback>{user?.name[0]}</Avatar.Fallback>
       </Avatar>
       </Button>
      <Dropdown.Popover>
