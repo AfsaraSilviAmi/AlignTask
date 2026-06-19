@@ -18,6 +18,7 @@ import { Avatar, Button, Drawer } from "@heroui/react";
 import Link from "next/link";
 import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
+import { BiSearch } from "react-icons/bi";
 
 export function DashboardSideBar() {
   const [open, setOpen] = useState(false);
@@ -39,9 +40,11 @@ export function DashboardSideBar() {
 
     freelancer: [
       { icon: House, label: "Dashboard", href: "/dashboard/freelancer" },
-      { icon: Briefcase, label: "Browse Jobs", href: "/dashboard/freelancer/browse-tasks" },
-      { icon: Envelope, label: "Messages", href: "/dashboard/freelancer/messages" },
-      { icon: Gear, label: "Settings", href: "/dashboard/freelancer/settings" },
+      { icon: BiSearch, label: "Browse Jobs", href: "/dashboard/freelancer/browse-tasks" },
+      { icon: Envelope, label: "Proposals", href: "/dashboard/freelancer/proposals" },
+      { icon: Envelope, label: "Projects", href: "/dashboard/freelancer/projects" },
+      { icon: Gear, label: "Earnings", href: "/dashboard/freelancer/earnings" },
+      { icon: Gear, label: "Profile", href: "/dashboard/freelancer/profile" },
     ],
 
     admin: [
