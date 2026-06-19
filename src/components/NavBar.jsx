@@ -30,7 +30,7 @@ await authClient.signOut()
   const navLinks = [
     { name: "Home", href: "/" },
     { name: "Browse Tasks", href: "/browse-tasks" },
-    { name: "Browse Freelancers", href: "/freelancers" },
+    { name: "Browse Freelancers", href: "/browse-freelancers" },
   ];
 
   const isActive = (href) => {
