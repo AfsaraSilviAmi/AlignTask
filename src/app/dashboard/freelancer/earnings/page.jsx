@@ -35,8 +35,7 @@ export default function EarningsPage() {
 
   if (loading) return <p className="p-6">Loading earnings...</p>;
 
-  const total = payments.reduce((sum, p) => sum + p.amount, 0);
-
+ const total = payments.reduce((sum, p) => sum + Number(p.amount || 0), 0);
   return (
     <div className="p-6">
       <h1 className="text-2xl font-bold mb-4">My Earnings</h1>
@@ -50,7 +49,7 @@ export default function EarningsPage() {
           <div key={p._id} className="border p-4 rounded-xl bg-white">
             <p><b>Task:</b> {p.taskTitle}</p>
             <p><b>Client:</b> {p.clientName}</p>
-            <p><b>Amount:</b> ${p.amount}</p>
+            <p><b>Amount:</b> ${Number(p.amount)}</p>
             <p>
               <b>Date:</b>{" "}
               {new Date(p.paidAt).toDateString()}

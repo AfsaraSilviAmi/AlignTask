@@ -50,8 +50,8 @@ export function DashboardSideBar() {
     admin: [
       { icon: House, label: "Admin Panel", href: "/dashboard/admin" },
       { icon: Person, label: "Users", href: "/dashboard/admin/users" },
-      { icon: Bell, label: "Reports", href: "/dashboard/admin/reports" },
-      { icon: Gear, label: "Settings", href: "/dashboard/admin/settings" },
+      { icon: Bell, label: "Tasks", href: "/dashboard/admin/tasks" },
+      { icon: Gear, label: "Payments", href: "/dashboard/admin/payments" },
     ],
   };
 
@@ -106,12 +106,15 @@ export function DashboardSideBar() {
                   </nav>
                   <div className="mt-6 border-t pt-4">
   <div className="flex items-center gap-3">
-    <div className="h-10 w-10 rounded-full bg-linear-to-r from-[#678d58] to-[#74d3ae] flex items-center justify-center text-white font-semibold">
-      {user?.name?.charAt(0)}
+    <div className="h-10 w-10 rounded-full bg-linear-to-r from-[#678d58] to-[#74d3ae] flex items-center justify-center font-semibold">
+     <Avatar>
+           <Avatar.Image alt={user?.name} src={user?.image} />
+           <Avatar.Fallback>{user?.name[0]}</Avatar.Fallback>
+         </Avatar>
     </div>
 
     <div>
-      <p className="font-medium text-sm">{user?.name}</p>
+      <p className="font-medium text-black text-sm">{user?.name}</p>
       <p className="text-xs text-gray-500 capitalize">
         {role}
       </p>

@@ -10,10 +10,12 @@ import { authClient } from "@/lib/auth-client";
 const NavBar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const pathname = usePathname();
+  
   const {
         data: session,
         isPending
     } = authClient.useSession()
+    
 if (isPending) return null;
 const user = session?.user
 const dashboardPath =

@@ -13,6 +13,7 @@ import {
   ListBox,
 } from "@heroui/react";
 import { toast } from "react-toastify";
+import { Edit } from "lucide-react";
 
 export default function EditTaskModal({ task, onUpdated }) {
   const [open, setOpen] = useState(false);
@@ -75,10 +76,9 @@ export default function EditTaskModal({ task, onUpdated }) {
     <Modal open={open} onOpenChange={setOpen}>
       {/* OPEN BUTTON */}
       <Button
-        color="success"
-        variant="flat"
+       className="bg-linear-to-r from-[#678d58] to-[#74d3ae]"
         disabled={task.status !== "open"}
-        onPress={() => setOpen(true)}
+        onClick={() => setOpen(true)}
       >
         Edit
       </Button>
@@ -89,7 +89,12 @@ export default function EditTaskModal({ task, onUpdated }) {
             <Modal.CloseTrigger />
 
             <Modal.Header>
-              <Modal.Heading>Edit Task</Modal.Heading>
+              <Modal.Heading >
+                <div className="flex gap-4">
+                   <Edit></Edit>
+                Edit Task
+                </div>
+               </Modal.Heading>
             </Modal.Header>
 
             <Modal.Body>

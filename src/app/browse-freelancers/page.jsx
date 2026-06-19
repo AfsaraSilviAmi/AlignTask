@@ -25,7 +25,7 @@ export default function BrowseFreelancersPage() {
             key={freelancer?._id}
              href={`/browse-freelancers/${freelancer._id}`}
           >
-            <p>{freelancer._id}</p>
+           
             <div className="border rounded-xl p-4 shadow hover:shadow-lg cursor-pointer">
               <Image
                 src={freelancer?.image}

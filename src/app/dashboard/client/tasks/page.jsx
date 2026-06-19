@@ -110,13 +110,15 @@ export default function MyTasksPage() {
         </div>
       ) : (
         /* TASK GRID */
-        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6">
+        <div className="grid md:grid-cols-3 gap-6 items-stretch auto-rows-fr">
           {tasks.map((task) => (
-            <div
-              key={task._id}
-              className="bg-white border rounded-2xl p-5 shadow-sm
-                         hover:shadow-xl hover:-translate-y-1 transition duration-200"
-            >
+           <div
+  key={task._id}
+  className="
+    bg-white border rounded-2xl p-5 shadow-sm
+    hover:shadow-xl hover:-translate-y-1 transition duration-200
+    flex flex-col h-full"
+>
               {/* TITLE + STATUS */}
               <div className="flex justify-between items-start">
                 <h2 className="font-bold text-lg text-gray-800 line-clamp-1">
@@ -153,7 +155,8 @@ export default function MyTasksPage() {
               </div>
 
               {/* ACTIONS */}
-              <div className="flex gap-2 mt-5">
+             <div className="mt-3 border-t border-gray-100">
+  <div className="flex gap-2 mt-4">
                 {task.status === "open" && (
                   <EditTaskModal
                     task={task}
@@ -176,6 +179,7 @@ export default function MyTasksPage() {
                     );
                   }}
                 />
+              </div>
               </div>
             </div>
           ))}
