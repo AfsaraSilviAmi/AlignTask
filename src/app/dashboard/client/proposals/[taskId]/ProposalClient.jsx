@@ -148,10 +148,9 @@ export default function ProposalClient({ taskId }) {
               <b>Budget:</b> ${p.budget}
             </p>
 
-            <p>
-              <b>Delivery:</b>{" "}
-              {new Date(p.deliveryDate).toDateString()}
-            </p>
+           <p>
+  <b>Estimated Days:</b> {p.estimatedDays} days
+</p>
 
             <p>
               <b>Message:</b> {p.message}

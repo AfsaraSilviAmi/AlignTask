@@ -92,7 +92,7 @@ export default function EditTaskModal({ task, onUpdated }) {
               <Modal.Heading >
                 <div className="flex gap-4">
                    <Edit></Edit>
-                Edit Task
+               <span className="bg-gradient-to-r from-[#678d58] to-[#74d3ae] bg-clip-text text-transparent text-xl">Edit Task</span>
                 </div>
                </Modal.Heading>
             </Modal.Header>
@@ -171,11 +171,11 @@ export default function EditTaskModal({ task, onUpdated }) {
             </Modal.Body>
 
             <Modal.Footer>
-              <Button variant="secondary" onPress={() => setOpen(false)}>
+              <Button slot="close" variant="secondary" className="text-[#dd9787]" onClick={() => setOpen(false)}>
                 Cancel
               </Button>
 
-              <Button color="primary" onPress={handleUpdate}>
+              <Button slot="close" className="bg-linear-to-r from-[#678d58] to-[#74d3ae]" onClick={handleUpdate}>
                 Save Changes
               </Button>
             </Modal.Footer>

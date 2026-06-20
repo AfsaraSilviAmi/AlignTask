@@ -9,11 +9,11 @@ export default function ApplyProposal({ task }) {
   const { data: session } = authClient.useSession();
   const user = session?.user;
 
-  const [form, setForm] = useState({
-    budget: "",
-    deliveryDate: "",
-    message: "",
-  });
+ const [form, setForm] = useState({
+  budget: "",
+  estimatedDays: "",
+  message: "",
+});
 
   const submitProposal = async () => {
     try {
@@ -32,14 +32,14 @@ export default function ApplyProposal({ task }) {
           },
           body: JSON.stringify({
             taskId: task._id,
-
+            taskTitle: task.title,
             // ✅ auto filled (NOT user input)
             freelancerId: user.id,
             freelancerEmail: user.email,
             freelancerName: user.name,
 
             budget: form.budget,
-            deliveryDate: form.deliveryDate,
+          estimatedDays: form.estimatedDays,
             message: form.message,
           }),
         }
@@ -96,13 +96,18 @@ export default function ApplyProposal({ task }) {
         }
       />
 
-      <Input
-        type="date"
-        value={form.deliveryDate}
-        onChange={(e) =>
-          setForm({ ...form, deliveryDate: e.target.value })
-        }
-      />
+    <Input
+  type="number"
+  min="1"
+  placeholder="Estimated Days"
+  value={form.estimatedDays}
+  onChange={(e) =>
+    setForm({
+      ...form,
+      estimatedDays: e.target.value,
+    })
+  }
+/>
 
       <TextArea
         placeholder="Cover message"
