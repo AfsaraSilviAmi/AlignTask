@@ -9,13 +9,20 @@ export default function ApplyProposal({ task }) {
   const { data: session } = authClient.useSession();
   const user = session?.user;
 
- const [form, setForm] = useState({
-  budget: "",
-  estimatedDays: "",
-  message: "",
-});
+  const [form, setForm] = useState({
+    budget: "",
+    estimatedDays: "",
+    message: "",
+  });
 
-  const submitProposal = async () => {
+  const submitProposal = async (e) => {
+    e.preventDefault(); // ✅ important
+
+    // ✅ extra safety validation (recommended)
+    if (!form.budget || !form.estimatedDays || !form.message) {
+      return toast.error("Please fill all fields");
+    }
+
     try {
       if (!user) return toast.error("Please login first");
 
@@ -27,29 +34,27 @@ export default function ApplyProposal({ task }) {
         `${process.env.NEXT_PUBLIC_BASE_URL}/proposals`,
         {
           method: "POST",
-          headers: {
-            "Content-Type": "application/json",
-          },
+          headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
             taskId: task._id,
             taskTitle: task.title,
-            // ✅ auto filled (NOT user input)
             freelancerId: user.id,
             freelancerEmail: user.email,
             freelancerName: user.name,
-
             budget: form.budget,
-          estimatedDays: form.estimatedDays,
+            estimatedDays: form.estimatedDays,
             message: form.message,
           }),
         }
       );
 
       const data = await res.json();
-
       if (!res.ok) throw new Error(data.error);
 
       toast.success("Proposal submitted!");
+
+      // optional reset
+      setForm({ budget: "", estimatedDays: "", message: "" });
     } catch (err) {
       toast.error(err.message);
     }
@@ -78,9 +83,8 @@ export default function ApplyProposal({ task }) {
   }
 
   return (
-    <div className="space-y-3 grid">
-
-      {/* 🔥 FREELANCER INFO (READ ONLY UI) */}
+    <form onSubmit={submitProposal} className="space-y-3 grid">
+      {/* USER INFO */}
       <div className="text-sm p-3 border rounded bg-gray-50">
         <p><b>Name:</b> {user.name}</p>
         <p><b>Email:</b> {user.email}</p>
@@ -89,6 +93,7 @@ export default function ApplyProposal({ task }) {
       <Input
         type="number"
         min="1"
+        required
         value={form.budget}
         placeholder="Your Budget"
         onChange={(e) =>
@@ -96,34 +101,32 @@ export default function ApplyProposal({ task }) {
         }
       />
 
-    <Input
-  type="number"
-  min="1"
-  placeholder="Estimated Days"
-  value={form.estimatedDays}
-  onChange={(e) =>
-    setForm({
-      ...form,
-      estimatedDays: e.target.value,
-    })
-  }
-/>
+      <Input
+        type="number"
+        min="1"
+        required
+        value={form.estimatedDays}
+        placeholder="Estimated Days"
+        onChange={(e) =>
+          setForm({ ...form, estimatedDays: e.target.value })
+        }
+      />
 
       <TextArea
-        placeholder="Cover message"
+        required
         value={form.message}
+        placeholder="Cover message"
         onChange={(e) =>
           setForm({ ...form, message: e.target.value })
         }
       />
 
       <button
-        onClick={submitProposal}
+        type="submit"   // ✅ important
         className="w-full bg-linear-to-r from-[#678d58] to-[#74d3ae] text-white py-2 rounded hover:opacity-90"
       >
         Submit Proposal
       </button>
-
-    </div>
+    </form>
   );
 }

@@ -38,6 +38,33 @@ export default function MyTasksPage() {
     if (status === "completed") return "bg-green-100 text-green-700";
     return "bg-gray-100";
   };
+  const getCategoryEmoji = (category) => {
+  switch (category) {
+    case "Design":
+      return "🎨";
+
+    case "Development":
+      return "💻";
+
+    case "Writing":
+      return "✍️";
+
+    case "Marketing":
+      return "📢";
+
+    case "Video Editing":
+      return "🎥";
+
+    case "Data Entry":
+      return "📊";
+
+    case "Other":
+      return "🧩";
+
+    default:
+      return "📁";
+  }
+};
 
   const chip =
     "px-3 py-1 rounded-full text-xs font-medium border bg-gray-50 text-gray-700";
@@ -140,8 +167,8 @@ export default function MyTasksPage() {
               {/* CHIPS */}
               <div className="flex flex-wrap gap-2 mt-4 mb-4">
                 <span className={chip}>
-                  📂 {task.category}
-                </span>
+  {getCategoryEmoji(task.category)} {task.category}
+</span>
 
                 <span className="px-3 py-1 rounded-full text-xs font-medium bg-green-50 text-green-700 border">
                   💰 ${task.budget}
