@@ -122,7 +122,7 @@ const getStatusChip = (status) => {
           </Link>
         </div>
       ) : (
-        <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-6 auto-rows-fr">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 auto-rows-fr">
           {tasks.map((task) => (
             <div
               key={task._id}

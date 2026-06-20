@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import { MdArrowUpward } from "react-icons/md";
 
 export default function SuccessPage() {
   const params = useSearchParams();
@@ -67,7 +68,7 @@ export default function SuccessPage() {
 
         <button
           onClick={() => router.push("/dashboard/client")}
-          className="mt-6 w-full bg-[#678d58] text-white py-2 rounded hover:opacity-90"
+          className="mt-6 w-full bg-linear-to-r from-[#678d58] to-[#74d3ae] text-white py-2 rounded-full hover:opacity-90"
         >
           Go to Dashboard
         </button>

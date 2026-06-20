@@ -19,6 +19,7 @@ import Link from "next/link";
 import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import { BiSearch } from "react-icons/bi";
+import { ChartArea, FileText, User, Wallet } from "lucide-react";
 
 export function DashboardSideBar() {
   const [open, setOpen] = useState(false);
@@ -31,7 +32,7 @@ export function DashboardSideBar() {
   // ROLE BASED NAVIGATION
   const navItems = {
     client: [
-      { icon: House, label: "Home", href: "/dashboard/client" },
+      { icon: ChartArea, label: "Overview", href: "/dashboard/client" },
        { icon: Plus, label: "Post Tasks", href: "/dashboard/client/tasks/new" },
       { icon: ListCheck, label: "My Tasks", href: "/dashboard/client/tasks" },
       { icon: File, label: "Manage Proposals", href: "/dashboard/client/proposals" },
@@ -39,12 +40,12 @@ export function DashboardSideBar() {
     ],
 
     freelancer: [
-      { icon: House, label: "Dashboard", href: "/dashboard/freelancer" },
+      { icon: ChartArea, label: "Overview", href: "/dashboard/freelancer" },
       { icon: BiSearch, label: "Browse Jobs", href: "/dashboard/freelancer/browse-tasks" },
-      { icon: Envelope, label: "Proposals", href: "/dashboard/freelancer/proposals" },
-      { icon: Envelope, label: "Projects", href: "/dashboard/freelancer/projects" },
-      { icon: Gear, label: "Earnings", href: "/dashboard/freelancer/earnings" },
-      { icon: Gear, label: "Profile", href: "/dashboard/freelancer/profile" },
+      { icon: FileText, label: "Proposals", href: "/dashboard/freelancer/proposals" },
+      { icon: Briefcase, label: "Projects", href: "/dashboard/freelancer/projects" },
+      { icon: Wallet, label: "Earnings", href: "/dashboard/freelancer/earnings" },
+      { icon: User, label: "Profile", href: "/dashboard/freelancer/profile" },
     ],
 
     admin: [
@@ -64,7 +65,7 @@ export function DashboardSideBar() {
         <Drawer open={open} onOpenChange={setOpen}>
         <Button
   onClick={() => setOpen(true)}
-  className="bg-linear-to-r from-[#678d58] to-[#74d3ae] text-white"
+  className="bg-linear-to-r from-[#678d58] to-[#74d3ae] text-white sticky fixed top-0 z-10"
 >
  <LayoutSideContent/>
 </Button>
@@ -76,7 +77,7 @@ export function DashboardSideBar() {
 
               <Drawer.Header className="border-b pb-4">
   <div>
-    <h2 className="text-xl font-bold bg-gradient-to-r from-[#678d58] to-[#74d3ae] bg-clip-text text-transparent">
+    <h2 className="text-xl font-bold bg-linear-to-r from-[#678d58] to-[#74d3ae] bg-clip-text text-transparent">
       AlignTask
     </h2>
 
@@ -129,7 +130,7 @@ export function DashboardSideBar() {
       </div>
 
       {/* ================= DESKTOP SIDEBAR ================= */}
-      <aside className="hidden lg:flex lg:flex-col lg:w-64 lg:h-screen border-r bg-white px-4 py-6">
+      <aside className="hidden lg:flex lg:flex-col lg:w-64 self-stretch border-r bg-white px-4 py-6">
         
         {/* Header */}
         <div className="mb-6">

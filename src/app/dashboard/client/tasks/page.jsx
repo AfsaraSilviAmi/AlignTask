@@ -137,7 +137,7 @@ export default function MyTasksPage() {
         </div>
       ) : (
         /* TASK GRID */
-        <div className="grid md:grid-cols-3 gap-6 auto-rows-fr">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {tasks.map((task) => (
            <div
   key={task._id}
