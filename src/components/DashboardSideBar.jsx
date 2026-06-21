@@ -18,7 +18,7 @@ import { Avatar, Button, Drawer } from "@heroui/react";
 import Link from "next/link";
 import { useState } from "react";
 import { authClient } from "@/lib/auth-client";
-import { BiSearch } from "react-icons/bi";
+import { BiMoney, BiSearch } from "react-icons/bi";
 import { ChartArea, FileText, User, Wallet } from "lucide-react";
 
 export function DashboardSideBar() {
@@ -41,7 +41,7 @@ export function DashboardSideBar() {
 
     freelancer: [
       { icon: ChartArea, label: "Overview", href: "/dashboard/freelancer" },
-      { icon: BiSearch, label: "Browse Jobs", href: "/dashboard/freelancer/browse-tasks" },
+      { icon: BiSearch, label: "Browse Tasks", href: "/dashboard/freelancer/browse-tasks" },
       { icon: FileText, label: "Proposals", href: "/dashboard/freelancer/proposals" },
       { icon: Briefcase, label: "Projects", href: "/dashboard/freelancer/projects" },
       { icon: Wallet, label: "Earnings", href: "/dashboard/freelancer/earnings" },
@@ -49,10 +49,10 @@ export function DashboardSideBar() {
     ],
 
     admin: [
-      { icon: House, label: "Admin Panel", href: "/dashboard/admin" },
+      { icon: ChartArea, label: "Overview", href: "/dashboard/admin" },
       { icon: Person, label: "Users", href: "/dashboard/admin/users" },
-      { icon: Bell, label: "Tasks", href: "/dashboard/admin/tasks" },
-      { icon: Gear, label: "Payments", href: "/dashboard/admin/payments" },
+      { icon: Briefcase, label: "Tasks", href: "/dashboard/admin/tasks" },
+      { icon: BiMoney, label: "Payments", href: "/dashboard/admin/payments" },
     ],
   };
 
