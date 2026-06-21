@@ -42,7 +42,7 @@ export default function AdminHome() {
 
         {/* Text */}
         <p className="text-gray-600 font-medium tracking-wide">
-          Loading your tasks...
+          Loading your admin overview...
         </p>
 
         {/* subtle dots animation */}

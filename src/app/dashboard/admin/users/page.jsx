@@ -3,7 +3,8 @@
 import { useEffect, useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import Image from "next/image";
-import { Button } from "@heroui/react";
+import { AlertDialog, Button } from "@heroui/react";
+import { toast } from "react-toastify";
 
 export default function AdminUsers() {
   const [users, setUsers] = useState([]);
@@ -34,31 +35,51 @@ const [loading, setLoading] = useState(true);
     fetchUsers();
   }, []);
 
-  const blockUser = async (id) => {
+ const blockUser = async (id) => {
+  try {
     const { data: tokenData } = await authClient.token();
 
-    await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/admin/users/block/${id}`, {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${tokenData.token}`,
-      },
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/admin/users/block/${id}`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${tokenData.token}`,
+        },
+      }
+    );
 
+    if (!res.ok) throw new Error();
+
+    toast.success("User blocked successfully 🚫");
     fetchUsers();
-  };
+  } catch (err) {
+    toast.error("Failed to block user");
+  }
+};
 
-  const unblockUser = async (id) => {
+ const unblockUser = async (id) => {
+  try {
     const { data: tokenData } = await authClient.token();
 
-    await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/admin/users/unblock/${id}`, {
-      method: "PATCH",
-      headers: {
-        Authorization: `Bearer ${tokenData.token}`,
-      },
-    });
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/admin/users/unblock/${id}`,
+      {
+        method: "PATCH",
+        headers: {
+          Authorization: `Bearer ${tokenData.token}`,
+        },
+      }
+    );
 
+    if (!res.ok) throw new Error();
+
+    toast.success("User unblocked successfully ✅");
     fetchUsers();
-  };
+  } catch (err) {
+    toast.error("Failed to unblock user");
+  }
+};
   if (loading) {
   return (
     <div>
@@ -74,7 +95,7 @@ const [loading, setLoading] = useState(true);
 
         {/* Text */}
         <p className="text-gray-600 font-medium tracking-wide">
-          Loading your tasks...
+          Loading your users...
         </p>
 
         {/* subtle dots animation */}
@@ -102,7 +123,7 @@ const [loading, setLoading] = useState(true);
     </div>
 
     <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-6">
-      {users.map((u) => (
+      {users?.map((u) => (
         <div
           key={u._id}
           className="bg-white rounded-2xl border shadow-sm p-6 hover:shadow-md transition"
@@ -172,23 +193,66 @@ const [loading, setLoading] = useState(true);
             </span>
           </div>
 
-          {/* Action */}
-          {!u.blocked ? (
+        
+        {/* Action */}
+{!u.blocked ? (
+  <AlertDialog>
+    <Button
+      variant="danger-soft"
+      className="w-full py-2.5 rounded-full border-2 border-red-600"
+    >
+      Block User
+    </Button>
+
+    <AlertDialog.Backdrop>
+      <AlertDialog.Container>
+        <AlertDialog.Dialog className="sm:max-w-md">
+
+          <AlertDialog.CloseTrigger />
+
+          <AlertDialog.Header>
+            <AlertDialog.Icon status="danger" />
+            <AlertDialog.Heading>
+              Block User?
+            </AlertDialog.Heading>
+          </AlertDialog.Header>
+
+          <AlertDialog.Body>
+            <p>
+              Are you sure you want to block{" "}
+              <strong>{u.name}</strong>?
+            </p>
+            <p className="text-sm text-gray-500 mt-2">
+              This user will lose access to the platform.
+            </p>
+          </AlertDialog.Body>
+
+          <AlertDialog.Footer>
+            <Button slot="close" variant="tertiary">
+              Cancel
+            </Button>
+
             <Button
-              onClick={() => blockUser(u._id)}
+              slot="close"
               variant="danger-soft"
-              className="w-full py-2.5 rounded-full border-2 border-red-600"
+              onPress={() => blockUser(u._id)}
             >
-              Block User
+              Yes, Block
             </Button>
-          ) : (
-            <Button
-              onClick={() => unblockUser(u._id)}
-              className="w-full bg-gradient-to-r from-[#678d58] to-[#74d3ae] text-white py-2.5 rounded-xl font-medium transition"
-            >
-              Unblock User
-            </Button>
-          )}
+          </AlertDialog.Footer>
+
+        </AlertDialog.Dialog>
+      </AlertDialog.Container>
+    </AlertDialog.Backdrop>
+  </AlertDialog>
+) : (
+  <Button
+    onClick={() => unblockUser(u._id)}
+    className="w-full bg-gradient-to-r from-[#678d58] to-[#74d3ae] text-white py-2.5 rounded-xl font-medium transition"
+  >
+    Unblock User
+  </Button>
+)}
         </div>
       ))}
     </div>
