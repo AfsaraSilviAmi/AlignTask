@@ -26,6 +26,7 @@ const dashboardPath =
     : "/dashboard/client";
 const handleLogOut = async() =>{
 await authClient.signOut()
+window.location.reload();
 }
 
 

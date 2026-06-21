@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { motion, AnimatePresence } from "framer-motion";
 import { useEffect, useState } from "react";
+import { authClient } from "@/lib/auth-client";
 
 const images = [
   "/banner.jpg",
@@ -13,7 +14,32 @@ const images = [
 
 const Banner = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
+  const [role, setRole] = useState(null);
+  const [loading, setLoading] = useState(true);
 
+  // 🔐 GET SESSION (FIXED SAFE VERSION)
+ useEffect(() => {
+  const loadSession = async () => {
+    try {
+      const res = await authClient.getSession();
+      const user = res?.data?.user;
+      setRole(user?.role || null);
+    } catch {
+      setRole(null);
+    }
+  };
+
+  loadSession(); // initial load
+
+  // 🔥 AUTO REFRESH SESSION EVERY 5 SECONDS
+  const interval = setInterval(() => {
+    loadSession();
+  }, 5000);
+
+  return () => clearInterval(interval);
+}, []);
+
+  // 🎞 SLIDER
   useEffect(() => {
     const timer = setInterval(() => {
       setCurrentSlide((prev) => (prev + 1) % images.length);
@@ -22,12 +48,18 @@ const Banner = () => {
     return () => clearInterval(timer);
   }, []);
 
+  const isLoggedIn = !!role;
+
+const showPostTask = !isLoggedIn || role === "client";
+
+const showBrowseTasks = !isLoggedIn || role === "freelancer" || role === "admin";
+
   return (
     <section
       className="relative overflow-hidden flex items-center justify-center"
       style={{ minHeight: "85vh" }}
     >
-      {/* SLIDER BACKGROUND */}
+      {/* BACKGROUND SLIDER */}
       <AnimatePresence mode="wait">
         <motion.div
           key={currentSlide}
@@ -40,18 +72,12 @@ const Banner = () => {
             backgroundImage: `url(${images[currentSlide]})`,
             backgroundSize: "cover",
             backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
           }}
         />
       </AnimatePresence>
 
-      {/* DARK OVERLAY */}
-      <div
-        className="absolute inset-0"
-        style={{ background: "rgba(0,0,0,0.55)" }}
-      />
-
-      {/* THEME OVERLAY */}
+      {/* OVERLAYS */}
+      <div className="absolute inset-0 bg-black/55" />
       <div
         className="absolute inset-0"
         style={{
@@ -60,7 +86,7 @@ const Banner = () => {
         }}
       />
 
-      {/* FLOATING SHAPES */}
+      {/* FLOATING SHAPES (UNCHANGED) */}
       <motion.div
         animate={{ y: [0, -25, 0] }}
         transition={{ duration: 6, repeat: Infinity }}
@@ -109,11 +135,9 @@ const Banner = () => {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
           style={{
-            fontSize: "clamp(2.5rem, 5vw, 4.5rem)",
+            fontSize: "clamp(2.3rem, 5vw, 4rem)",
             fontWeight: "900",
             lineHeight: "1.1",
-            textShadow: "0 4px 20px rgba(0,0,0,.4)",
-            marginBottom: "20px",
           }}
         >
           Get your tasks done by skilled freelancers
@@ -126,15 +150,12 @@ const Banner = () => {
           transition={{ duration: 0.8, delay: 0.2 }}
           style={{
             maxWidth: "800px",
-            margin: "0 auto",
-            fontSize: "1.2rem",
+            margin: "20px auto",
+            fontSize: "1.15rem",
             lineHeight: "1.7",
-            color: "#f5f5f5",
           }}
         >
-          Post a task, receive competitive proposals from talented freelancers,
-          hire the best match, and get your work completed quickly and securely
-          in one powerful marketplace.
+          Post tasks, receive proposals, hire freelancers, and complete work easily in one marketplace.
         </motion.p>
 
         {/* BUTTONS */}
@@ -145,86 +166,49 @@ const Banner = () => {
           style={{
             display: "flex",
             justifyContent: "center",
-            alignItems: "center",
-            gap: "20px",
+            gap: "16px",
             marginTop: "40px",
             flexWrap: "wrap",
           }}
         >
-          {/* POST TASK */}
-          <Link href="/dashboard/client/tasks/new">
-            <motion.button
-              whileHover={{ scale: 1.08, y: -3 }}
-              whileTap={{ scale: 0.95 }}
-              style={{
-                background: "white",
-                color: "#678d58",
-                padding: "14px 34px",
-                borderRadius: "999px",
-                border: "none",
-                fontSize: "17px",
-                fontWeight: "700",
-                cursor: "pointer",
-                boxShadow: "0 10px 25px rgba(0,0,0,.25)",
-                transition: "0.3s",
-              }}
-            >
-              Post a Task
-            </motion.button>
-          </Link>
+          {/* CLIENT BUTTON */}
+          {showPostTask && (
+            <Link href="/dashboard/client/tasks/new">
+              <button
+                style={{
+                  background: "white",
+                  color: "#678d58",
+                  padding: "14px 32px",
+                  borderRadius: "999px",
+                  fontWeight: "700",
+                  border: "none",
+                  cursor: "pointer",
+                }}
+              >
+                Post a Task
+              </button>
+            </Link>
+          )}
 
-          {/* BROWSE TASKS */}
-          <Link href="/browse-tasks">
-            <motion.button
-              whileHover={{
-                scale: 1.08,
-                y: -3,
-                backgroundColor: "#ffffff",
-                color: "#678d58",
-              }}
-              whileTap={{ scale: 0.95 }}
-              style={{
-                background: "transparent",
-                color: "white",
-                padding: "14px 34px",
-                borderRadius: "999px",
-                border: "2px solid white",
-                fontSize: "17px",
-                fontWeight: "700",
-                cursor: "pointer",
-                transition: "0.3s",
-              }}
-            >
-              Browse Tasks
-            </motion.button>
-          </Link>
+          {/* FREELANCER + ADMIN */}
+          {showBrowseTasks && (
+            <Link href="/browse-tasks">
+              <button
+                style={{
+                  background: "transparent",
+                  color: "white",
+                  padding: "14px 32px",
+                  borderRadius: "999px",
+                  fontWeight: "700",
+                  border: "2px solid white",
+                  cursor: "pointer",
+                }}
+              >
+                Browse Tasks
+              </button>
+            </Link>
+          )}
         </motion.div>
-
-        {/* SLIDER DOTS */}
-        <div
-          style={{
-            marginTop: "30px",
-            display: "flex",
-            justifyContent: "center",
-            gap: "10px",
-          }}
-        >
-          {images.map((_, index) => (
-            <div
-              key={index}
-              style={{
-                width: currentSlide === index ? "28px" : "10px",
-                height: "10px",
-                borderRadius: "20px",
-                background:
-                  currentSlide === index
-                    ? "#ffffff"
-                    : "rgba(255,255,255,0.5)",
-                transition: "all 0.3s ease",
-              }}
-            />
-          ))}
-        </div>
       </div>
     </section>
   );
