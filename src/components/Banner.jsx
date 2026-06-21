@@ -15,29 +15,27 @@ const images = [
 const Banner = () => {
   const [currentSlide, setCurrentSlide] = useState(0);
   const [role, setRole] = useState(null);
-  const [loading, setLoading] = useState(true);
 
-  // 🔐 GET SESSION (FIXED SAFE VERSION)
- useEffect(() => {
-  const loadSession = async () => {
-    try {
-      const res = await authClient.getSession();
-      const user = res?.data?.user;
-      setRole(user?.role || null);
-    } catch {
-      setRole(null);
-    }
-  };
+  // 🔐 SESSION + AUTO REFRESH
+  useEffect(() => {
+    const loadSession = async () => {
+      try {
+        const res = await authClient.getSession();
+        const user = res?.data?.user;
+        setRole(user?.role || null);
+      } catch {
+        setRole(null);
+      }
+    };
 
-  loadSession(); // initial load
-
-  // 🔥 AUTO REFRESH SESSION EVERY 5 SECONDS
-  const interval = setInterval(() => {
     loadSession();
-  }, 5000);
 
-  return () => clearInterval(interval);
-}, []);
+    const interval = setInterval(() => {
+      loadSession();
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, []);
 
   // 🎞 SLIDER
   useEffect(() => {
@@ -50,9 +48,9 @@ const Banner = () => {
 
   const isLoggedIn = !!role;
 
-const showPostTask = !isLoggedIn || role === "client";
-
-const showBrowseTasks = !isLoggedIn || role === "freelancer" || role === "admin";
+  const showPostTask = !isLoggedIn || role === "client";
+  const showBrowseTasks =
+    !isLoggedIn || role === "freelancer" || role === "admin";
 
   return (
     <section
@@ -86,7 +84,7 @@ const showBrowseTasks = !isLoggedIn || role === "freelancer" || role === "admin"
         }}
       />
 
-      {/* FLOATING SHAPES (UNCHANGED) */}
+      {/* FLOATING SHAPES */}
       <motion.div
         animate={{ y: [0, -25, 0] }}
         transition={{ duration: 6, repeat: Infinity }}
@@ -171,7 +169,6 @@ const showBrowseTasks = !isLoggedIn || role === "freelancer" || role === "admin"
             flexWrap: "wrap",
           }}
         >
-          {/* CLIENT BUTTON */}
           {showPostTask && (
             <Link href="/dashboard/client/tasks/new">
               <button
@@ -190,7 +187,6 @@ const showBrowseTasks = !isLoggedIn || role === "freelancer" || role === "admin"
             </Link>
           )}
 
-          {/* FREELANCER + ADMIN */}
           {showBrowseTasks && (
             <Link href="/browse-tasks">
               <button
@@ -209,6 +205,32 @@ const showBrowseTasks = !isLoggedIn || role === "freelancer" || role === "admin"
             </Link>
           )}
         </motion.div>
+
+        {/* 🔵 DOTS (RESTORED) */}
+        <div
+          style={{
+            marginTop: "30px",
+            display: "flex",
+            justifyContent: "center",
+            gap: "10px",
+          }}
+        >
+          {images.map((_, index) => (
+            <div
+              key={index}
+              style={{
+                width: currentSlide === index ? "28px" : "10px",
+                height: "10px",
+                borderRadius: "20px",
+                background:
+                  currentSlide === index
+                    ? "#ffffff"
+                    : "rgba(255,255,255,0.5)",
+                transition: "all 0.3s ease",
+              }}
+            />
+          ))}
+        </div>
       </div>
     </section>
   );
