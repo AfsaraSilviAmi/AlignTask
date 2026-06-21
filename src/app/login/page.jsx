@@ -35,7 +35,21 @@ export default function LoginPage() {
         setLoading(false);
         return;
       }
+      
+       const statusRes = await fetch(
+  `${process.env.NEXT_PUBLIC_BASE_URL}/users/status/${user.email}`
+);
 
+const status = await statusRes.json();
+
+if (status.blocked) {
+  await authClient.signOut();
+
+  toast.error("Your account has been blocked");
+
+  setLoading(false);
+  return;
+}
       // 🔥 Role-based redirect (you can adjust later)
       const role = data?.user?.role;
 
