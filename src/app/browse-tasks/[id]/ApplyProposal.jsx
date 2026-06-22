@@ -36,12 +36,16 @@ export default function ApplyProposal({ task }) {
       if (user.role !== "freelancer") {
         return toast.error("Only freelancers can apply");
       }
-
+     const {data:tokenData} = await authClient.token()
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/proposals`,
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json",
+          authorization: `Bearer ${tokenData?.token}`
+ 
+
+          },
           body: JSON.stringify({
             taskId: task?._id,
             taskTitle: task?.title,

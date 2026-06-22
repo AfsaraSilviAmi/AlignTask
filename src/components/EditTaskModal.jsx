@@ -14,6 +14,7 @@ import {
 } from "@heroui/react";
 import { toast } from "react-toastify";
 import { Edit } from "lucide-react";
+import { authClient } from "@/lib/auth-client";
 
 export default function EditTaskModal({ task, onUpdated }) {
   const [open, setOpen] = useState(false);
@@ -46,6 +47,8 @@ export default function EditTaskModal({ task, onUpdated }) {
   };
 
   const handleUpdate = async () => {
+     const {data:tokenData} = await authClient.token()
+
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/tasks/${task._id}`,
@@ -53,6 +56,8 @@ export default function EditTaskModal({ task, onUpdated }) {
           method: "PATCH",
           headers: {
             "Content-Type": "application/json",
+            authorization: `Bearer ${tokenData?.token}`
+
           },
           body: JSON.stringify(form),
         }

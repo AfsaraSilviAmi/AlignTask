@@ -19,9 +19,19 @@ export default function ClientDashboardHome() {
   useEffect(() => {
     if (!user?.email) return;
 
+      
+
     const loadStats = async () => {
+      const {data:tokenData} = await authClient.token()
+
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/client/stats/${user.email}`
+        `${process.env.NEXT_PUBLIC_BASE_URL}/client/stats/${user.email}`,
+        {
+          headers: {
+            authorization: `Bearer ${tokenData?.token}`,
+          }
+        }
+        
       );
 
       const data = await res.json();

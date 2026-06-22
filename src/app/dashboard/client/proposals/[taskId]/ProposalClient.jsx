@@ -7,15 +7,26 @@ import { authClient } from "@/lib/auth-client";
 export default function ProposalClient({ taskId }) {
   const { data: session } = authClient.useSession();
   const user = session?.user;
+  
 
   const [proposals, setProposals] = useState([]);
   const [task, setTask] = useState(null);
   const [loading, setLoading] = useState(true);
+  
 
   const loadProposals = async () => {
+     const {data:tokenData} = await authClient.token()
+
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/proposals/${taskId}`
+        `${process.env.NEXT_PUBLIC_BASE_URL}/proposals/${taskId}`,
+        {
+          headers: {
+            "Content-Type": "application/json",
+            authorization: `Bearer ${tokenData?.token}`
+
+          }
+        }
       );
 
       const data = await res.json();

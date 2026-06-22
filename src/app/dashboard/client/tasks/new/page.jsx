@@ -92,14 +92,17 @@ const validateForm = () => {
 
     // DEBUG (VERY IMPORTANT)
     console.log("FINAL PAYLOAD:", payload);
+    console.log(session);
+const { data: tokenData } = await authClient.token();
 
-    const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/tasks`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(payload),
-    });
+const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/tasks`, {
+  method: "POST",
+  headers: {
+    "Content-Type": "application/json",
+    Authorization: `Bearer ${tokenData?.token}`,
+  },
+  body: JSON.stringify(payload),
+});
 
     const data = await res.json();
 
