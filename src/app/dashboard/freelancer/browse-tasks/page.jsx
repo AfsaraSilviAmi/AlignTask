@@ -24,7 +24,7 @@ export default function FreelancerBrowseTasks() {
 
         if (!res.ok) throw new Error(data.error);
 
-        setTasks(data);
+        setTasks(data.tasks);
       } catch (err) {
         toast.error(err.message);
       } finally {

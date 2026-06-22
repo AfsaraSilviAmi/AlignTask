@@ -81,6 +81,7 @@ export default function ProfilePage() {
       if (!res.ok) throw new Error(data.error);
 
       toast.success("Profile updated!");
+      window.dispatchEvent(new Event("profile-updated"));
     } catch (err) {
       toast.error(err.message);
     }

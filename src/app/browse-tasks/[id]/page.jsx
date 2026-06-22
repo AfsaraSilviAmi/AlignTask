@@ -114,7 +114,7 @@ export default async function Page({ params }) {
                   </p>
 
                   <p className="text-sm text-gray-500">
-                    Project Owner
+                    Client
                   </p>
                 </div>
 

@@ -15,37 +15,68 @@ export default function PublicBrowseTasks() {
   const [searchTerm, setSearchTerm] = useState("");
   const [category, setCategory] = useState("All");
 
-  useEffect(() => {
-    fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/browse-tasks`)
-      .then((res) => res.json())
-      .then((data) => {
-        setTasks(data);
-        setLoading(false);
-      })
-      .catch(() => {
-        toast.error("Failed to load tasks");
-        setLoading(false);
-      });
-  }, []);
+const [page, setPage] = useState(1);
+const [totalPages, setTotalPages] = useState(1);
+const [totalTasks, setTotalTasks] = useState(0);
 
-  const filteredTasks = tasks.filter((task) => {
-    const matchesTitle = task.title
-      .toLowerCase()
-      .includes(searchTerm.toLowerCase());
+ useEffect(() => {
+  const fetchTasks = async () => {
+    try {
+      setLoading(true);
 
-   const matchesCategory =
-  category === "All"
-    ? true
-    : task.category?.trim().toLowerCase() === category.toLowerCase();
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_BASE_URL}/browse-tasks?page=${page}&limit=9&search=${searchTerm}&category=${category}`
+      );
 
-    return matchesTitle && matchesCategory;
-  });
+      const data = await res.json();
+
+      setTasks(data.tasks);
+      setTotalPages(data.totalPages);
+      setTotalTasks(data.total);
+    } catch (error) {
+      toast.error("Failed to load tasks");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  fetchTasks();
+}, [page, searchTerm, category]);
+
+  
 
   if (loading) {
     return (
-      <div className="p-10 text-center animate-pulse text-gray-500">
-        Loading available jobs...
+      <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      
+      <div className="flex flex-col items-center gap-6">
+
+        {/* Floating dots animation */}
+        <div className="flex gap-3">
+          <span className="h-3 w-3 bg-[#678d58] rounded-full animate-bounce"></span>
+          <span className="h-3 w-3 bg-[#74d3ae] rounded-full animate-bounce [animation-delay:150ms]"></span>
+          <span className="h-3 w-3 bg-[#678d58] rounded-full animate-bounce [animation-delay:300ms]"></span>
+        </div>
+
+        {/* Main animated text */}
+        <div className="text-center">
+          <h2 className="text-xl font-semibold text-gray-700">
+            Loading your tasks
+          </h2>
+
+          <p className="text-gray-500 mt-1 animate-pulse">
+            organizing your workspace...
+          </p>
+        </div>
+
+        {/* Fun rotating ring */}
+        <div className="relative mt-2">
+          <div className="h-14 w-14 rounded-full border-4 border-gray-200"></div>
+          <div className="h-14 w-14 rounded-full border-4 border-t-[#678d58] border-l-[#74d3ae] border-r-transparent border-b-transparent animate-spin absolute top-0 left-0"></div>
+        </div>
+
       </div>
+    </div>
     );
   }
 
@@ -78,13 +109,19 @@ export default function PublicBrowseTasks() {
           type="text"
           placeholder="Search tasks..."
           value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
+         onChange={(e) => {
+  setSearchTerm(e.target.value);
+  setPage(1);
+}}
           className="flex-1 border rounded-xl px-4 py-2 outline-none focus:ring-2 focus:ring-[#74d3ae]"
         />
 
        <select
   value={category}
-  onChange={(e) => setCategory(e.target.value)}
+  onChange={(e) => {
+  setCategory(e.target.value);
+  setPage(1);
+}}
   className="border rounded-xl px-4 py-2 outline-none focus:ring-2 focus:ring-[#74d3ae]"
 >
   <option value="All">All Categories</option>
@@ -97,9 +134,17 @@ export default function PublicBrowseTasks() {
   <option value="Other">📦 Other</option>
 </select>
       </motion.div>
+<div className="flex justify-between items-center mb-6 text-sm text-gray-500">
+  <p>
+    Showing page {page} of {totalPages}
+  </p>
 
+  <p>
+    {tasks.length} tasks found
+  </p>
+</div>
       {/* EMPTY STATE */}
-      {filteredTasks.length === 0 ? (
+      {tasks.length === 0 ? (
         <motion.div
           initial={{ opacity: 0 }}
           animate={{ opacity: 1 }}
@@ -127,7 +172,7 @@ export default function PublicBrowseTasks() {
           }}
           className="grid md:grid-cols-2 xl:grid-cols-3 gap-6"
         >
-          {filteredTasks.map((task) => (
+          {tasks.map((task) => (
             <motion.div
               key={task._id}
               initial={{ opacity: 0, y: 20, scale: 0.95 }}
@@ -169,6 +214,39 @@ export default function PublicBrowseTasks() {
           ))}
         </motion.div>
       )}
+      {totalPages > 1 && (
+  <div className="flex justify-center items-center gap-2 mt-10 flex-wrap">
+    <button
+      disabled={page === 1}
+      onClick={() => setPage((prev) => prev - 1)}
+      className="px-4 py-2 border rounded-lg disabled:opacity-50"
+    >
+      Previous
+    </button>
+
+    {[...Array(totalPages)].map((_, index) => (
+      <button
+        key={index}
+        onClick={() => setPage(index + 1)}
+        className={`w-10 h-10 rounded-lg border ${
+          page === index + 1
+            ? "bg-[#74d3ae] text-white border-[#74d3ae]"
+            : "bg-white"
+        }`}
+      >
+        {index + 1}
+      </button>
+    ))}
+
+    <button
+      disabled={page === totalPages}
+      onClick={() => setPage((prev) => prev + 1)}
+      className="px-4 py-2 border rounded-lg disabled:opacity-50"
+    >
+      Next
+    </button>
+  </div>
+)}
     </div>
   );
 }

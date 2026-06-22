@@ -9,24 +9,26 @@ export default function AdminHome() {
   const [stats, setStats] = useState(null);
 
   useEffect(() => {
-    const fetchStats = async () => {
-      const { data: tokenData } = await authClient.token();
+  const fetchStats = async () => {
+    const { data: tokenData } = await authClient.token();
 
-      const res = await fetch(
-        `${process.env.NEXT_PUBLIC_BASE_URL}/admin/stats`,
-        {
-          headers: {
-            Authorization: `Bearer ${tokenData.token}`,
-          },
-        }
-      );
+    if (!tokenData?.token) return; // SAFE GUARD ONLY
 
-      const data = await res.json();
-      setStats(data);
-    };
+    const res = await fetch(
+      `${process.env.NEXT_PUBLIC_BASE_URL}/admin/stats`,
+      {
+        headers: {
+          Authorization: `Bearer ${tokenData.token}`,
+        },
+      }
+    );
 
-    fetchStats();
-  }, []);
+    const data = await res.json();
+    setStats(data);
+  };
+
+  fetchStats();
+}, []);
 
   if (!stats) return (
       <div>
