@@ -5,8 +5,8 @@ import { FaXTwitter, FaGithub, FaLinkedin, FaEnvelope, FaPhone, FaLocationDot } 
 const Footer = () => {
   const navLinks = [
     { name: "Home", href: "/" },
-    { name: "Browse Tasks", href: "/tasks" },
-    { name: "Browse Freelancers", href: "/freelancers" },
+    { name: "Browse Tasks", href: "/browse-tasks" },
+    { name: "Browse Freelancers", href: "/browse-freelancers" },
    
   ];
 
