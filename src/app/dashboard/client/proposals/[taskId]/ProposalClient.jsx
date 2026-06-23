@@ -63,12 +63,17 @@ export default function ProposalClient({ taskId }) {
     task?.status === "awaiting_payment";
 
   const goToCheckout = async (proposal) => {
+    const {data:tokenData} = await authClient.token()
+
     try {
       const res = await fetch(
         `${process.env.NEXT_PUBLIC_BASE_URL}/create-checkout-session`,
         {
           method: "POST",
-          headers: { "Content-Type": "application/json" },
+          headers: { "Content-Type": "application/json",
+             authorization: `Bearer ${tokenData?.token}`
+
+           },
           body: JSON.stringify({
             proposalId: proposal._id,
             amount: proposal.budget,

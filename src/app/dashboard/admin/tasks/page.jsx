@@ -80,7 +80,7 @@ const fetchTasks = async () => {
       case "completed":
         return {
           label: "Completed",
-          className: "bg-purple-500 text-purple-700",
+          className: "bg-purple-100 text-purple-700",
           icon: <CheckCircle size={14} />,
         };
 

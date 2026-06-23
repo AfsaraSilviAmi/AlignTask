@@ -4,15 +4,19 @@ import { useEffect, useState } from "react";
 import { authClient } from "@/lib/auth-client";
 import { toast } from "react-toastify";
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 export default function FreelancerBrowseTasks() {
-  const { data: session } = authClient.useSession();
+   const router = useRouter();
+
+  const { data: session, isLoading } = authClient.useSession();
   const user = session?.user;
 
   const [tasks, setTasks] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [authChecked, setAuthChecked] = useState(false);
 
+  // FETCH TASKS
   useEffect(() => {
     const loadTasks = async () => {
       try {
@@ -35,30 +39,44 @@ export default function FreelancerBrowseTasks() {
     loadTasks();
   }, []);
 
-  if (!user) {
-  redirect("/login");
-}
+  // AUTH GUARD (FIXED PROPERLY)
+  useEffect(() => {
+    if (isLoading) return;
 
-if (user.role !== "freelancer") {
-  redirect("/unauthorized");
-}
+    if (!session) return;
 
-const getCategoryEmoji = (category) => {
-  const categories = {
-    Design: "🎨",
-    Development: "💻",
-    Writing: "✍️",
-    Marketing: "📢",
-    "Video Editing": "🎥",
-    "Data Entry": "📊",
-    Other: "🧩",
+    if (!user) {
+      router.replace("/login");
+      return;
+    }
+
+    if (user.role !== "freelancer") {
+      router.replace("/unauthorized");
+      return;
+    }
+
+    setAuthChecked(true);
+  }, [session, user, isLoading, router]);
+
+  const getCategoryEmoji = (category) => {
+    const categories = {
+      Design: "🎨",
+      Development: "💻",
+      Writing: "✍️",
+      Marketing: "📢",
+      "Video Editing": "🎥",
+      "Data Entry": "📊",
+      Other: "🧩",
+    };
+
+    return categories[category] || "📁";
   };
 
-  return categories[category] || "📁";
-};
-  if (loading) {
+  // 🔥 CRITICAL FIX: block render until auth is ready
+  if (!authChecked) {
     return (
-       <div className="min-h-screen flex items-center justify-center bg-gray-50">
+     <div>
+             <div className="min-h-screen flex items-center justify-center bg-gray-50">
       
       <div className="flex flex-col items-center gap-4">
         
@@ -82,6 +100,38 @@ const getCategoryEmoji = (category) => {
 
       </div>
     </div>
+        </div>
+    );
+  }
+
+  if (isLoading || loading) {
+    return (
+     <div>
+             <div className="min-h-screen flex items-center justify-center bg-gray-50">
+      
+      <div className="flex flex-col items-center gap-4">
+        
+        {/* Animated ring loader */}
+        <div className="relative">
+          <div className="h-14 w-14 rounded-full border-4 border-gray-200"></div>
+          <div className="h-14 w-14 rounded-full border-4 border-t-[#678d58] border-r-transparent border-b-transparent border-l-transparent animate-spin absolute top-0 left-0"></div>
+        </div>
+
+        {/* Text */}
+        <p className="text-gray-600 font-medium tracking-wide">
+          Loading your tasks...
+        </p>
+
+        {/* subtle dots animation */}
+        <div className="flex gap-1 mt-1">
+          <span className="h-2 w-2 bg-[#678d58] rounded-full animate-bounce [animation-delay:-0.3s]"></span>
+          <span className="h-2 w-2 bg-[#678d58] rounded-full animate-bounce [animation-delay:-0.15s]"></span>
+          <span className="h-2 w-2 bg-[#678d58] rounded-full animate-bounce"></span>
+        </div>
+
+      </div>
+    </div>
+        </div>
     );
   }
 
