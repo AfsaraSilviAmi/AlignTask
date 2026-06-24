@@ -11,7 +11,8 @@ export default function PublicBrowseTasks() {
   const user = session?.user;
 
   const [tasks, setTasks] = useState([]);
-  const [loading, setLoading] = useState(true);
+ const [loading, setLoading] = useState(false);
+const [initialLoading, setInitialLoading] = useState(true);
   const [searchTerm, setSearchTerm] = useState("");
   const [category, setCategory] = useState("All");
 
@@ -37,6 +38,7 @@ const [totalTasks, setTotalTasks] = useState(0);
       toast.error("Failed to load tasks");
     } finally {
       setLoading(false);
+      setInitialLoading(false);
     }
   };
 
@@ -45,7 +47,7 @@ const [totalTasks, setTotalTasks] = useState(0);
 
   
 
-  if (loading) {
+  if (initialLoading) {
     return (
       <div className="min-h-screen flex items-center justify-center bg-gray-50">
       
@@ -115,6 +117,11 @@ const [totalTasks, setTotalTasks] = useState(0);
 }}
           className="flex-1 border rounded-xl px-4 py-2 outline-none focus:ring-2 focus:ring-[#74d3ae]"
         />
+        {loading && (
+  <div className="mb-4 text-center text-sm text-gray-500 animate-pulse">
+    Searching tasks...
+  </div>
+)}
 
        <select
   value={category}
