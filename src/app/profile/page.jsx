@@ -72,7 +72,7 @@ export default function ProfilePage() {
       <div className="w-full max-w-2xl bg-white/70 backdrop-blur-xl border border-gray-200 shadow-xl rounded-2xl p-8">
 
         {/* HEADER */}
-        <div className="flex items-center gap-6">
+        <div className="flex flex-col md:flex-row items-center gap-6">
 
           {profile.image ? (
             <Image

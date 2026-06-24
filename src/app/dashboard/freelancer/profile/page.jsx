@@ -120,7 +120,7 @@ export default function ProfilePage() {
             Skills
           </label>
 
-          <div className="flex gap-2">
+          <div className="flex flex-col md:flex-row gap-2">
             <input
               value={skillInput}
               onChange={(e) => setSkillInput(e.target.value)}

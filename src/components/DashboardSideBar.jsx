@@ -89,7 +89,7 @@ export function DashboardSideBar() {
         <Drawer open={open} onOpenChange={setOpen}>
           <Button
             onClick={() => setOpen(true)}
-            className="bg-linear-to-r from-[#678d58] to-[#74d3ae] text-white sticky fixed top-0 z-10"
+            className="bg-linear-to-r from-[#678d58] to-[#74d3ae] text-white sticky top-20 z-50"
           >
             <LayoutSideContent />
           </Button>
