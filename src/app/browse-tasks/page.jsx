@@ -117,11 +117,7 @@ const [totalTasks, setTotalTasks] = useState(0);
 }}
           className="flex-1 border rounded-xl px-4 py-2 outline-none focus:ring-2 focus:ring-[#74d3ae]"
         />
-        {loading && (
-  <div className="mb-4 text-center text-sm text-gray-500 animate-pulse">
-    Searching tasks...
-  </div>
-)}
+        
 
        <select
   value={category}
@@ -150,6 +146,11 @@ const [totalTasks, setTotalTasks] = useState(0);
     {tasks.length} tasks found
   </p>
 </div>
+{loading && (
+  <div className="mb-4 text-center text-sm text-gray-500 animate-pulse">
+    Searching tasks...
+  </div>
+)}
       {/* EMPTY STATE */}
       {tasks.length === 0 ? (
         <motion.div

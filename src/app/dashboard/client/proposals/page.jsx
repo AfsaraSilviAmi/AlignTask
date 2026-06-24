@@ -30,7 +30,7 @@ export default function ClientProposalsPage() {
   if (!user) {
     return (
       <div className="p-6">
-        <p>Login required</p>
+        <p>Loading...</p>
       </div>
     );
   }

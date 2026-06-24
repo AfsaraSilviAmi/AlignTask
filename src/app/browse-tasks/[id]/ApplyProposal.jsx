@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { authClient } from "@/lib/auth-client";
-import { Input, TextArea } from "@heroui/react";
+import { Button, Input, TextArea } from "@heroui/react";
 
 export default function ApplyProposal({ task }) {
   // 🔥 FIX 1: prevent hydration mismatch
@@ -186,12 +186,12 @@ export default function ApplyProposal({ task }) {
         }
       />
 
-      <button
+      <Button
         type="submit"
-        className="w-full bg-gradient-to-r from-[#678d58] to-[#74d3ae] text-white font-semibold py-3 rounded-full"
+        className="w-full bg-gradient-to-r from-[#678d58] to-[#74d3ae] text-white font-semibold py-3 rounded-full hover:opacity-90"
       >
         🚀 Submit Proposal
-      </button>
+      </Button>
 
     </form>
   );
