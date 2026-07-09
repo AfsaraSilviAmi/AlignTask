@@ -118,12 +118,12 @@ git clone https://github.com/AfsaraSilviAmi/AlignTask-server.git
 ### 2. Navigate to each project
 
 ```bash
-cd client
+
 npm install
 ```
 
 ```bash
-cd server
+
 npm install
 ```
 
