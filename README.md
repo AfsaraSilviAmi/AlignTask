@@ -6,7 +6,7 @@ A full-stack freelance marketplace platform that connects clients and freelancer
 
 ## 🌐 Live Project
 
-🔗 **Live Website:** https://align-task-ruby.vercel.app
+🔗 **Live Website:**  https://align-task-ruby.vercel.app
 ---
 
 ## 📖 Project Overview
