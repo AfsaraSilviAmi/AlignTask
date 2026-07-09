@@ -4,19 +4,15 @@ A full-stack freelance marketplace platform that connects clients and freelancer
 
 ---
 
-## 🌐 Live Project
+## 🌐 Live Link
 
-🔗 **Live Website:**  https://align-task-ruby.vercel.app
+https://align-task-ruby.vercel.app
+
 ---
 
 ## 📖 Project Overview
 
 AlignTask is a modern freelance marketplace built using the MERN stack. It provides a seamless experience for clients to hire freelancers and manage projects, while freelancers can browse available jobs, submit proposals, and track their earnings. Administrators can monitor users, platform activity, and overall system management through a dedicated admin dashboard.
-
----
-## Purpose
-
-AlignTask was built to connect clients and freelancers through a modern freelancing platform. Each logged in user have their own dashboard depending on their roles. Clients can post tasks, review proposals, hire freelancers, and manage projects, while freelancers can browse jobs, submit proposals, and track their earnings. And Admin can track and manage all users, tasks and earnings.
 
 ---
 
